@@ -5,12 +5,12 @@
 Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
-Version:	1.0
+Version:	1.1
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
-# Source0-md5:	9f458da2a222490330ed93d3298ced75
+# Source0-md5:	2359fb53128b12cf295bdf8553e5869b
 URL:		http://www.nongnu.org/mailnotify/
 Patch0:		%{name}-capplet.patch
 Patch1:		%{name}-desktop.patch
