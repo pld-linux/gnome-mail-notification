@@ -5,18 +5,18 @@
 Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
-Version:	0.3.1
+Version:	0.3.4
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://savannah.nongnu.org/download/mailnotify/mailnotify.pkg/%{version}/%{rname}-%{version}.tar.gz
-# Source0-md5:	a3a10c4a7942a9a11a4cd026d15edf24
+Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
+# Source0-md5:	9819fe9b6c2da167c80400299db109f4
 URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool
 BuildRequires:	gnet-devel
 BuildRequires:	libgnomeui-devel
+BuildRequires:	libtool
 BuildRequires:	pkgconfig
 Requires(post): GConf2 >= 2.4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -35,7 +35,6 @@ wiele formatów folderów.
 %setup -q -n %{rname}-%{version}
 
 %build
-rm -f missing
 %{__aclocal} -I m4
 %{__autoheader}
 %{__automake}
@@ -62,6 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc NEWS README TODO ChangeLog
 %attr(755,root,root) %{_bindir}/mail-notification
-%config %{_sysconfdir}/gconf/schemas/*
+%{_sysconfdir}/gconf/schemas/*
+%{_datadir}/%{rname}
 %{_pixmapsdir}/*
 %{_desktopdir}/*.desktop
