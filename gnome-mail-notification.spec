@@ -1,3 +1,6 @@
+# TODO:
+# - pl .desktop desc
+#
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
@@ -13,7 +16,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	gnet-devel
-BuildRequires:	gnome-panel-devel >= 2.0.0
+BuildRequires:	libgnomeui-devel
 BuildRequires:	pkgconfig
 Requires(post): GConf2 >= 2.4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
