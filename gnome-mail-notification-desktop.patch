@@ -1,11 +1,17 @@
-diff -urN mail-notification-0.99.orig/data/mail-notification.desktop.in mail-notification-0.99/data/mail-notification.desktop.in
---- mail-notification-0.99.orig/data/mail-notification.desktop.in	2004-11-17 15:18:57.647008664 +0100
-+++ mail-notification-0.99/data/mail-notification.desktop.in	2004-11-17 15:20:01.779259080 +0100
-@@ -4,6 +4,6 @@
+diff -ur o-mail-notification-1.1/data/mail-notification.desktop.in mail-notification-1.1/data/mail-notification.desktop.in
+--- o-mail-notification-1.1/data/mail-notification.desktop.in	2005-02-27 07:03:24.000000000 -0700
++++ mail-notification-1.1/data/mail-notification.desktop.in	2005-03-06 21:40:06.959069048 -0700
+@@ -4,8 +4,8 @@
  Icon=mail-notification.png
  _Comment=Get notified when new mail arrives
  Type=Application
 -Categories=GNOME;Application;Network;
 +Categories=GTK;GNOME;Network;Email;
- Exec=mail-notification
+ Exec=mail-notification --display-main-window
  Terminal=false
+ StartupNotify=true
+-X-GNOME-DocPath=mail-notification/mail-notification.xml
+\ No newline at end of file
++X-GNOME-DocPath=mail-notification/mail-notification.xml
+Only in mail-notification-1.1/data: mail-notification.desktop.in.orig
+Only in mail-notification-1.1/data: mail-notification.desktop.in.rej
