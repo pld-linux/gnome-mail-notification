@@ -1,0 +1,11 @@
+--- data/mail-notification-properties.desktop.in.orig	2004-09-20 11:22:03.844087000 +0200
++++ data/mail-notification-properties.desktop.in	2004-09-20 11:22:12.440780104 +0200
+@@ -4,7 +4,7 @@
+ Icon=mail-notification.png
+ _Comment=Configure Mail Notification
+ Type=Application
+-Categories=GNOME;Application;Settings;
++Categories=GNOME;Settings;X-Capplet;
+ Exec=mail-notification --display-properties
+ Terminal=false
+ StartupNotify=true
