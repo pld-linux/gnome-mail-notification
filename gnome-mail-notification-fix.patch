@@ -1,0 +1,11 @@
+--- mail-notification-0.6.1/src/mn-md5.c.orig	2004-08-06 05:48:44.000000000 +0200
++++ mail-notification-0.6.1/src/mn-md5.c	2004-08-24 08:11:21.439917122 +0200
+@@ -42,7 +42,7 @@
+  * is a multiple of 4.
+  */
+ static void
+-mn_md5_encode (unsigned char *output, u_int32_t input, unsigned int len)
++mn_md5_encode (unsigned char *output, u_int32_t *input, unsigned int len)
+ {
+   unsigned int i, j;
+ 
