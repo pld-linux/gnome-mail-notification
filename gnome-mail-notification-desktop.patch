@@ -1,10 +1,11 @@
---- data/mail-notification.desktop.in.orig	2004-07-18 00:21:24.000000000 +0200
-+++ data/mail-notification.desktop.in	2004-08-12 11:44:12.029937184 +0200
+diff -urN mail-notification-0.99.orig/data/mail-notification.desktop.in mail-notification-0.99/data/mail-notification.desktop.in
+--- mail-notification-0.99.orig/data/mail-notification.desktop.in	2004-11-17 15:18:57.647008664 +0100
++++ mail-notification-0.99/data/mail-notification.desktop.in	2004-11-17 15:20:01.779259080 +0100
 @@ -4,6 +4,6 @@
  Icon=mail-notification.png
  _Comment=Get notified when new mail arrives
  Type=Application
--Categories=GTK;Application;Network;
-+Categories=GTK;Network;Email;
+-Categories=GNOME;Application;Network;
++Categories=GTK;GNOME;Network;Email;
  Exec=mail-notification
  Terminal=false

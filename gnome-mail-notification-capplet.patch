@@ -5,7 +5,7 @@
  _Comment=Configure Mail Notification
  Type=Application
 -Categories=GNOME;Application;Settings;
-+Categories=GNOME;Settings;X-Capplet;
++Categories=GTK;GNOME;Settings;X-Capplet;
  Exec=mail-notification --display-properties
  Terminal=false
  StartupNotify=true
