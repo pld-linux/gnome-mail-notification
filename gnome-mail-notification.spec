@@ -3,7 +3,7 @@ Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	1.1
-Release:	3
+Release:	4
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
@@ -21,7 +21,7 @@ BuildRequires:	eel-devel >= 2.10.0
 BuildRequires:	libsoup-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
-BuildRequires: rpmbuild(macros) >= 1.196
+BuildRequires: rpmbuild(macros) >= 1.197
 Requires(post,preun):	GConf2 >= 2.10.0
 Requires(post,postun):	scrollkeeper
 Requires:	gmime >= 2.1.0
@@ -66,18 +66,14 @@ mv $RPM_BUILD_ROOT%{_datadir}/control-center-2.0/capplets/mail-notification-prop
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/usr/bin/scrollkeeper-update -q
-%gconf_schema_install /etc/gconf/schemas/mail-notification.schemas
+%scrollkeeper_update_post
+%gconf_schema_install mail-notification.schemas
 
 %preun
-if [ $1 = 0 ]; then
-	%gconf_schema_uninstall /etc/gconf/schemas/mail-notification.schemas
-fi
+%gconf_schema_uninstall mail-notification.schemas
 
 %postun
-if [ $1 = 0 ]; then
-	/usr/bin/scrollkeeper-update -q
-fi
+%scrollkeeper_update_postun
 
 %files -f %{rname}.lang
 %defattr(644,root,root,755)
