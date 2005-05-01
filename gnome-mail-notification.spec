@@ -14,14 +14,14 @@ Patch1:		%{name}-desktop.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
+BuildRequires:	eel-devel >= 2.10.0
 BuildRequires:	gmime-devel >= 2.1.0
 BuildRequires:	gnet-devel >= 2.0.0
 BuildRequires:	libgnomeui-devel >= 2.10.0-2
-BuildRequires:	eel-devel >= 2.10.0
 BuildRequires:	libsoup-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
-BuildRequires: rpmbuild(macros) >= 1.197
+BuildRequires:	rpmbuild(macros) >= 1.197
 Requires(post,preun):	GConf2 >= 2.10.0
 Requires(post,postun):	scrollkeeper
 Requires:	gmime >= 2.1.0
