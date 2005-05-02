@@ -3,7 +3,7 @@ Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	1.1
-Release:	4
+Release:	5
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
@@ -11,15 +11,17 @@ Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.
 URL:		http://www.nongnu.org/mailnotify/
 Patch0:		%{name}-capplet.patch
 Patch1:		%{name}-desktop.patch
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
 BuildRequires:	eel-devel >= 2.10.0
 BuildRequires:	gmime-devel >= 2.1.0
 BuildRequires:	gnet-devel >= 2.0.0
 BuildRequires:	libgnomeui-devel >= 2.10.0-2
-BuildRequires:	libsoup-devel
+BuildRequires:	libicu-devel >= 2.6
+BuildRequires:	libsoup-devel >= 2.2
 BuildRequires:	libtool
+BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.197
 Requires(post,preun):	GConf2 >= 2.10.0
