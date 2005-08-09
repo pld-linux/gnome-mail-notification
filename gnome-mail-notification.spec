@@ -24,6 +24,7 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.197
+BuildRequires:	scrollkeeper
 Requires(post,preun):	GConf2 >= 2.10.0
 Requires(post,postun):	scrollkeeper
 Requires:	gmime >= 2.1.0
