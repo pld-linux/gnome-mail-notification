@@ -1,16 +1,21 @@
+# TODO:
+# - evolution support
+#
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
-Version:	1.1
-Release:	6
+Version:	2.0
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
-# Source0-md5:	2359fb53128b12cf295bdf8553e5869b
+# Source0-md5:	56ef7401aba1cb27d881fb0f33a3248d
 URL:		http://www.nongnu.org/mailnotify/
 Patch0:		%{name}-capplet.patch
 Patch1:		%{name}-desktop.patch
+Patch2:		%{name}-include.patch
+Patch3:		%{name}-gmail-properties.patch
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
@@ -44,6 +49,8 @@ wiele formatów folderów.
 %setup -q -n %{rname}-%{version}
 %patch0 -p0
 %patch1 -p1
+%patch2 -p0
+%patch3 -p0
 
 %build
 %{__aclocal} -I m4
@@ -61,8 +68,6 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 	
-mv $RPM_BUILD_ROOT%{_datadir}/control-center-2.0/capplets/mail-notification-properties.desktop $RPM_BUILD_ROOT%{_desktopdir}
-
 %find_lang %{rname} --all-name --with-gnome
 
 %clean
@@ -82,10 +87,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc NEWS README TODO
 %attr(755,root,root) %{_bindir}/mail-notification
-%{_sysconfdir}/gconf/schemas/*
 %{_datadir}/%{rname}
-%{_pixmapsdir}/*
 %{_desktopdir}/*.desktop
-%{_omf_dest_dir}/%{rname}
 %{_libdir}/bonobo/servers/*
+%{_omf_dest_dir}/%{rname}
+%{_pixmapsdir}/*
+%{_sysconfdir}/gconf/schemas/mail-notification.schemas
 %{_sysconfdir}/sound/events/*
