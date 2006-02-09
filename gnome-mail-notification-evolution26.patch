@@ -1,0 +1,18 @@
+diff -aurN mail-notification-2.0.orig/m4/evolution-plugin.m4 mail-notification-2.0/m4/evolution-plugin.m4
+--- mail-notification-2.0.orig/m4/evolution-plugin.m4	2005-08-03 18:11:27.000000000 +0200
++++ mail-notification-2.0/m4/evolution-plugin.m4	2006-02-09 16:07:51.897536584 +0100
+@@ -34,12 +34,12 @@
+ 
+ if test $found = yes; then
+ 	evolution_plugin_min_version=ifelse([$1],,, [>= $1])
+-	PKG_CHECK_MODULES(EVOLUTION_PLUGIN, [evolution-plugin-2.2 $evolution_plugin_min_version],, [found=no])
++	PKG_CHECK_MODULES(EVOLUTION_PLUGIN, [evolution-plugin-2.6 $evolution_plugin_min_version],, [found=no])
+ fi
+ 
+ if test $found = yes; then
+ 	AC_MSG_CHECKING([for the Evolution plugin directory])
+-	evolution_plugindir=`$PKG_CONFIG --variable=plugindir evolution-plugin-2.2 2>/dev/null`
++	evolution_plugindir=`$PKG_CONFIG --variable=plugindir evolution-plugin-2.6 2>/dev/null`
+ 	if test -n "$evolution_plugindir"; then
+ 		AC_MSG_RESULT([$evolution_plugindir])
+ 	else
