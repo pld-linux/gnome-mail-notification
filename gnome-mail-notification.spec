@@ -3,7 +3,7 @@ Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	2.0
-Release:	4.1
+Release:	5
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
@@ -15,6 +15,7 @@ Patch2:		%{name}-include.patch
 Patch3:		%{name}-gmail-properties.patch
 Patch4:		%{name}-imapauth.patch
 Patch5:		%{name}-evolution26.patch
+Patch6:		%{name}-configure.patch
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
@@ -46,6 +47,19 @@ Mail Notification to ikona dla obszaru powiadamiania GNOME informuj±ca
 u¿ytkowników, czy maj± now± pocztê. Obs³uguje wiele folderów oraz
 wiele formatów folderów.
 
+%package -n evolution-plugin-mail-notification
+Summary:	Mail Notification plugin for Evolution
+Summary(pl):	Wtyczka Mail Notification dla Evolution
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	evolution >= 2.6
+
+%description -n evolution-plugin-mail-notification
+Evolution mailbox support for Mail Notification.
+
+%description -n evolution-plugin-mail-notification -l pl
+Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
+
 %prep
 %setup -q -n %{rname}-%{version}
 %patch0 -p0
@@ -54,6 +68,7 @@ wiele formatów folderów.
 %patch3 -p0
 %patch4 -p0
 %patch5 -p1
+%patch6 -p1
 
 %build
 %{__aclocal} -I m4
@@ -61,7 +76,9 @@ wiele formatów folderów.
 %{__automake}
 %{__autoconf}
 %configure \
-	--disable-schemas-install
+	--disable-schemas-install \
+	--disable-static \
+	--with-evolution-source-dir=%{_includedir}/evolution-2.6
 %{__make}
 
 %install
@@ -71,6 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 	
+rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.6/plugins/*.la
+
 %find_lang %{rname} --all-name --with-gnome
 
 %clean
@@ -97,3 +116,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_pixmapsdir}/*
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
 %{_sysconfdir}/sound/events/*
+
+%files -n evolution-plugin-mail-notification
+%defattr(644,root,root,755)
+%{_libdir}/evolution/2.6/plugins/liborg-gnome-mail-notification.so
+%{_libdir}/evolution/2.6/plugins/org-gnome-mail-notification.eplug
