@@ -3,7 +3,7 @@ Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	2.0
-Release:	3
+Release:	5
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
@@ -15,14 +15,15 @@ Patch2:		%{name}-include.patch
 Patch3:		%{name}-gmail-properties.patch
 Patch4:		%{name}-imapauth.patch
 Patch5:		%{name}-evolution26.patch
+Patch6:		%{name}-configure.patch
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	eel-devel >= 2.10.0
-BuildRequires:	evolution-devel >= 2.5
+BuildRequires:	eel-devel >= 2.14.0
+BuildRequires:	evolution-devel >= 2.6
 BuildRequires:	gmime-devel >= 2.1.0
 BuildRequires:	gnet-devel >= 2.0.0
-BuildRequires:	libgnomeui-devel >= 2.10.0-2
+BuildRequires:	libgnomeui-devel >= 2.14.0
 BuildRequires:	libicu-devel >= 2.6
 BuildRequires:	libsoup-devel >= 2.2
 BuildRequires:	libtool
@@ -30,9 +31,10 @@ BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.197
 BuildRequires:	scrollkeeper
-Requires(post,preun):	GConf2 >= 2.10.0
+Requires(post,preun):	GConf2 >= 2.14.0
 Requires(post,postun):	scrollkeeper
 Requires:	gmime >= 2.1.0
+Requires:	libgnomeui >= 2.14.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -50,7 +52,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.5
+Requires:	evolution >= 2.6
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
@@ -66,6 +68,7 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %patch3 -p0
 %patch4 -p0
 %patch5 -p1
+%patch6 -p1
 
 %build
 %{__aclocal} -I m4
