@@ -14,13 +14,13 @@ Patch1:		%{name}-configure.patch
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	eel-devel >= 2.15.2
-BuildRequires:	evolution-devel >= 2.7.3
+BuildRequires:	eel-devel >= 2.14.1
+BuildRequires:	evolution-devel >= 2.6.1
 BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gnet-devel >= 2.0.0
-BuildRequires:	libgnomeui-devel >= 2.15.1
+BuildRequires:	libgnomeui-devel >= 2.14.1
 BuildRequires:	libicu-devel >= 2.6
-BuildRequires:	libsoup-devel >= 2.2.94
+BuildRequires:	libsoup-devel >= 2.2.7
 BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
@@ -29,7 +29,7 @@ BuildRequires:	scrollkeeper
 Requires(post,preun):	GConf2 >= 2.14.0
 Requires(post,postun):	scrollkeeper
 Requires:	gmime >= 2.1.19
-Requires:	libgnomeui >= 2.15.1
+Requires:	libgnomeui >= 2.14.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -79,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 \
 	autostartdir=%{_datadir}/gnome/autostart
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.8/plugins/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.6/plugins/*.la
 
 %find_lang %{rname} --all-name --with-gnome
 
@@ -110,5 +110,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-mail-notification
 %defattr(644,root,root,755)
-%{_libdir}/evolution/2.8/plugins/liborg-gnome-mail-notification.so
-%{_libdir}/evolution/2.8/plugins/org-gnome-mail-notification.eplug
+%{_libdir}/evolution/2.6/plugins/liborg-gnome-mail-notification.so
+%{_libdir}/evolution/2.6/plugins/org-gnome-mail-notification.eplug
