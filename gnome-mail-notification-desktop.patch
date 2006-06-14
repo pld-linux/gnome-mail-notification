@@ -1,17 +1,24 @@
-diff -ur o-mail-notification-1.1/data/mail-notification.desktop.in mail-notification-1.1/data/mail-notification.desktop.in
---- o-mail-notification-1.1/data/mail-notification.desktop.in	2005-02-27 07:03:24.000000000 -0700
-+++ mail-notification-1.1/data/mail-notification.desktop.in	2005-03-06 21:40:06.959069048 -0700
-@@ -4,8 +4,8 @@
+diff -aurN mail-notification-3.0.orig/data/mail-notification.desktop.in mail-notification-3.0/data/mail-notification.desktop.in
+--- mail-notification-3.0.orig/data/mail-notification.desktop.in	2006-05-03 03:55:40.000000000 +0200
++++ mail-notification-3.0/data/mail-notification.desktop.in	2006-06-14 18:38:55.441261912 +0200
+@@ -4,7 +4,7 @@
  Icon=mail-notification.png
  _Comment=Get notified when new mail arrives
  Type=Application
 -Categories=GNOME;Application;Network;
-+Categories=GTK;GNOME;Network;Email;
- Exec=mail-notification --display-main-window
++Categories==GTK;GNOME;Network;Email;
+ Exec=mail-notification --sm-disable
  Terminal=false
  StartupNotify=true
--X-GNOME-DocPath=mail-notification/mail-notification.xml
-\ No newline at end of file
-+X-GNOME-DocPath=mail-notification/mail-notification.xml
-Only in mail-notification-1.1/data: mail-notification.desktop.in.orig
-Only in mail-notification-1.1/data: mail-notification.desktop.in.rej
+diff -aurN mail-notification-3.0.orig/data/mail-notification-properties.desktop.in mail-notification-3.0/data/mail-notification-properties.desktop.in
+--- mail-notification-3.0.orig/data/mail-notification-properties.desktop.in	2006-03-04 06:04:49.000000000 +0100
++++ mail-notification-3.0/data/mail-notification-properties.desktop.in	2006-06-14 18:39:16.072125544 +0200
+@@ -4,7 +4,7 @@
+ Icon=mail-notification.png
+ _Comment=Configure Mail Notification
+ Type=Application
+-Categories=GNOME;Application;Settings;
++Categories=GTK;GNOME;Settings;
+ Exec=mail-notification --display-properties
+ Terminal=false
+ StartupNotify=true
