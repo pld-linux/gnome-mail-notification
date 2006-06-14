@@ -2,30 +2,25 @@
 Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
-Version:	2.0
-Release:	5
+Version:	3.0
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
-# Source0-md5:	56ef7401aba1cb27d881fb0f33a3248d
+# Source0-md5:	d19fb5c96a0f54d1b1541fbddf73488e
 URL:		http://www.nongnu.org/mailnotify/
-Patch0:		%{name}-capplet.patch
-Patch1:		%{name}-desktop.patch
-Patch2:		%{name}-include.patch
-Patch3:		%{name}-gmail-properties.patch
-Patch4:		%{name}-imapauth.patch
-Patch5:		%{name}-evolution26.patch
-Patch6:		%{name}-configure.patch
+Patch0:		%{name}-desktop.patch
+Patch1:		%{name}-configure.patch
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	eel-devel >= 2.14.0
-BuildRequires:	evolution-devel >= 2.6
-BuildRequires:	gmime-devel >= 2.1.0
+BuildRequires:	eel-devel >= 2.15.2
+BuildRequires:	evolution-devel >= 2.7.3
+BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gnet-devel >= 2.0.0
-BuildRequires:	libgnomeui-devel >= 2.14.0
+BuildRequires:	libgnomeui-devel >= 2.15.1
 BuildRequires:	libicu-devel >= 2.6
-BuildRequires:	libsoup-devel >= 2.2
+BuildRequires:	libsoup-devel >= 2.2.94
 BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
@@ -33,8 +28,8 @@ BuildRequires:	rpmbuild(macros) >= 1.197
 BuildRequires:	scrollkeeper
 Requires(post,preun):	GConf2 >= 2.14.0
 Requires(post,postun):	scrollkeeper
-Requires:	gmime >= 2.1.0
-Requires:	libgnomeui >= 2.14.0
+Requires:	gmime >= 2.1.19
+Requires:	libgnomeui >= 2.15.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,7 +47,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.6
+Requires:	evolution >= 2.7.3
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
@@ -62,13 +57,8 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %prep
 %setup -q -n %{rname}-%{version}
-%patch0 -p0
+%patch0 -p1
 %patch1 -p1
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
-%patch5 -p1
-%patch6 -p1
 
 %build
 %{__aclocal} -I m4
@@ -78,7 +68,7 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %configure \
 	--disable-schemas-install \
 	--disable-static \
-	--with-evolution-source-dir=%{_includedir}/evolution-2.6
+	--with-evolution-source-dir=%{_includedir}/evolution-2.8
 %{__make}
 
 %install
@@ -86,9 +76,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
+	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 \
+	autostartdir=%{_datadir}/gnome/autostart
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.6/plugins/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.8/plugins/*.la
 
 %find_lang %{rname} --all-name --with-gnome
 
@@ -110,14 +101,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc NEWS README TODO
 %attr(755,root,root) %{_bindir}/mail-notification
 %{_datadir}/%{rname}
+%{_datadir}/gnome/autostart/mail-notification.desktop
 %{_desktopdir}/*.desktop
 %{_libdir}/bonobo/servers/*
 %{_omf_dest_dir}/%{rname}
 %{_pixmapsdir}/*
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
-%{_sysconfdir}/sound/events/*
 
 %files -n evolution-plugin-mail-notification
 %defattr(644,root,root,755)
-%{_libdir}/evolution/2.6/plugins/liborg-gnome-mail-notification.so
-%{_libdir}/evolution/2.6/plugins/org-gnome-mail-notification.eplug
+%{_libdir}/evolution/2.8/plugins/liborg-gnome-mail-notification.so
+%{_libdir}/evolution/2.8/plugins/org-gnome-mail-notification.eplug
