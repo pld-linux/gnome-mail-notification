@@ -47,7 +47,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.7.3
+Requires:	evolution >= 2.6.1
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
