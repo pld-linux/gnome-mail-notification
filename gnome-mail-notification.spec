@@ -20,6 +20,7 @@ BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gnet-devel >= 2.0.0
 BuildRequires:	libgnomeui-devel >= 2.14.1
 BuildRequires:	libicu-devel >= 2.6
+BuildRequires:	libnotify-devel
 BuildRequires:	libsoup-devel >= 2.2.7
 BuildRequires:	libtool
 BuildRequires:	openssl-devel
