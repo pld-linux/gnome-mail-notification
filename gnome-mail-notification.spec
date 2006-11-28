@@ -2,25 +2,25 @@
 Summary:	GNOME notification area mail monitor
 Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
-Version:	3.0
-Release:	1
+Version:	4.0
+%define pre rc1
+Release:	0.%{pre}.1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
-# Source0-md5:	d19fb5c96a0f54d1b1541fbddf73488e
+Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}-%{pre}.tar.gz
+# Source0-md5:	91c09b72a59d161564b47fff033be37e
 URL:		http://www.nongnu.org/mailnotify/
 Patch0:		%{name}-desktop.patch
-Patch1:		%{name}-configure.patch
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	eel-devel >= 2.15.2
-BuildRequires:	evolution-devel >= 2.7.3
+BuildRequires:	eel-devel >= 2.14.1
+BuildRequires:	evolution-devel >= 2.8.0
 BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gnet-devel >= 2.0.0
-BuildRequires:	libgnomeui-devel >= 2.15.1
+BuildRequires:	libgnomeui-devel >= 2.14.1
 BuildRequires:	libicu-devel >= 2.6
-BuildRequires:	libsoup-devel >= 2.2.94
+BuildRequires:	libsoup-devel >= 2.2.7
 BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
@@ -29,7 +29,7 @@ BuildRequires:	scrollkeeper
 Requires(post,preun):	GConf2 >= 2.14.0
 Requires(post,postun):	scrollkeeper
 Requires:	gmime >= 2.1.19
-Requires:	libgnomeui >= 2.15.1
+Requires:	libgnomeui >= 2.14.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -47,7 +47,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.7.3
+Requires:	evolution >= 2.8.0
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
@@ -56,15 +56,10 @@ Evolution mailbox support for Mail Notification.
 Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %prep
-%setup -q -n %{rname}-%{version}
+%setup -q -n %{rname}-%{version}-%{pre}
 %patch0 -p1
-%patch1 -p1
 
 %build
-%{__aclocal} -I m4
-%{__autoheader}
-%{__automake}
-%{__autoconf}
 %configure \
 	--disable-schemas-install \
 	--disable-static \
@@ -79,7 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 \
 	autostartdir=%{_datadir}/gnome/autostart
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.8/plugins/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/2.6/plugins/*.la
 
 %find_lang %{rname} --all-name --with-gnome
 
@@ -105,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/*.desktop
 %{_libdir}/bonobo/servers/*
 %{_omf_dest_dir}/%{rname}
-%{_pixmapsdir}/*
+%{_iconsdir}/*
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
 
 %files -n evolution-plugin-mail-notification
