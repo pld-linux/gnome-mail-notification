@@ -101,10 +101,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/*.desktop
 %{_libdir}/bonobo/servers/*
 %{_omf_dest_dir}/%{rname}
-%{_iconsdir}/*
+%{_iconsdir}/*/*/*/*
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
 
 %files -n evolution-plugin-mail-notification
 %defattr(644,root,root,755)
-%{_libdir}/evolution/2.8/plugins/liborg-gnome-mail-notification.so
+%attr(755,root,root) %{_libdir}/evolution/2.8/plugins/liborg-gnome-mail-notification.so
 %{_libdir}/evolution/2.8/plugins/org-gnome-mail-notification.eplug
