@@ -1,6 +1,6 @@
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
-Summary(pl):	Monitor poczty widoczny w obszarze powiadamiania GNOME
+Summary(pl.UTF-8):   Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	4.0
 %define pre rc1
@@ -38,14 +38,14 @@ Mail Notification is an icon for the GNOME Notification Area that
 informs users if they have new mail. It handles multiple folders
 and multiple folder formats.
 
-%description -l pl
-Mail Notification to ikona dla obszaru powiadamiania GNOME informuj±ca
-u¿ytkowników, czy maj± now± pocztê. Obs³uguje wiele folderów oraz
-wiele formatów folderów.
+%description -l pl.UTF-8
+Mail Notification to ikona dla obszaru powiadamiania GNOME informujÄ…ca
+uÅ¼ytkownikÃ³w, czy majÄ… nowÄ… pocztÄ™. ObsÅ‚uguje wiele folderÃ³w oraz
+wiele formatÃ³w folderÃ³w.
 
 %package -n evolution-plugin-mail-notification
 Summary:	Mail Notification plugin for Evolution
-Summary(pl):	Wtyczka Mail Notification dla Evolution
+Summary(pl.UTF-8):   Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	evolution >= 2.8.0
@@ -53,7 +53,7 @@ Requires:	evolution >= 2.8.0
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
 
-%description -n evolution-plugin-mail-notification -l pl
+%description -n evolution-plugin-mail-notification -l pl.UTF-8
 Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %prep
