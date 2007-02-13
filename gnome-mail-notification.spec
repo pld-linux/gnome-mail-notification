@@ -1,6 +1,6 @@
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
-Summary(pl.UTF-8):   Monitor poczty widoczny w obszarze powiadamiania GNOME
+Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	4.0
 %define pre rc1
@@ -45,7 +45,7 @@ wiele formatów folderów.
 
 %package -n evolution-plugin-mail-notification
 Summary:	Mail Notification plugin for Evolution
-Summary(pl.UTF-8):   Wtyczka Mail Notification dla Evolution
+Summary(pl.UTF-8):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	evolution >= 2.8.0
