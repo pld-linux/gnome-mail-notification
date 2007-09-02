@@ -3,12 +3,12 @@
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
-Version:	4.0
+Version:	4.1
 Release:	0.1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.gz
-# Source0-md5:	0e10b221de4389fa9275fb7bf52dc010
+Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
+# Source0-md5:	4d9617ad0e7eded0953ac6d152f06a46
 URL:		http://www.nongnu.org/mailnotify/
 Patch0:		%{name}-desktop.patch
 BuildRequires:	autoconf >= 2.59
@@ -106,5 +106,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-mail-notification
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/evolution/%{_evo_ver}/plugins/liborg-gnome-mail-notification.so
-%{_libdir}/evolution/%{_evo_ver}/plugins/org-gnome-mail-notification.eplug
+%attr(755,root,root) %{_libdir}/evolution/%{_evo_ver}/plugins/liborg-jylefort-mail-notification.so
+%{_libdir}/evolution/%{_evo_ver}/plugins/org-jylefort-mail-notification.eplug
