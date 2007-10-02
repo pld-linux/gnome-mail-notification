@@ -1,10 +1,10 @@
-%define		_evo_ver	2.10
+%define		_evo_ver	2.12
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-%{rname}
 Version:	4.1
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
@@ -15,7 +15,7 @@ BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
 BuildRequires:	eel-devel >= 2.14.1
-BuildRequires:	evolution-devel >= 2.10.0
+BuildRequires:	evolution-devel >= 2.12.0
 BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gnet-devel >= 2.0.0
 BuildRequires:	libgnomeui-devel >= 2.14.1
@@ -48,7 +48,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.10.0
+Requires:	evolution >= 2.12.0
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
