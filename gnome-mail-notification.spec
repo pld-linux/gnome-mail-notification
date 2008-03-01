@@ -1,18 +1,16 @@
-%define		_evo_ver	2.12
+%define		evo_ver	2.12
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
-Name:		gnome-%{rname}
+Name:		gnome-mail-notification
 Version:	5.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
 # Source0-md5:	66bc819ef62a050627627b3496e4dfe8
-URL:		http://www.nongnu.org/mailnotify/
 Patch0:		%{name}-desktop.patch
-BuildRequires:	autoconf >= 2.59
-BuildRequires:	automake
+URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	cyrus-sasl-devel >= 2.0
 BuildRequires:	eel-devel >= 2.14.1
 BuildRequires:	evolution-devel >= 2.12.0
@@ -22,7 +20,6 @@ BuildRequires:	libgnomeui-devel >= 2.14.1
 BuildRequires:	libicu-devel >= 2.6
 BuildRequires:	libnotify-devel
 BuildRequires:	libsoup-devel >= 2.2.7
-BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.197
@@ -66,7 +63,7 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %configure \
 	--disable-schemas-install \
 	--disable-static \
-	--with-evolution-source-dir=%{_includedir}/evolution-%{_evo_ver}
+	--with-evolution-source-dir=%{_includedir}/evolution-%{evo_ver}
 %{__make}
 
 %install
@@ -77,7 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 \
 	autostartdir=%{_datadir}/gnome/autostart
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/%{_evo_ver}/plugins/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/%{evo_ver}/plugins/*.la
 
 [ -d $RPM_BUILD_ROOT%{_datadir}/locale/sr@latin ] || \
 	mv -f $RPM_BUILD_ROOT%{_datadir}/locale/sr@{Latn,latin}
@@ -110,5 +107,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-mail-notification
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/evolution/%{_evo_ver}/plugins/liborg-jylefort-mail-notification.so
-%{_libdir}/evolution/%{_evo_ver}/plugins/org-jylefort-mail-notification.eplug
+%attr(755,root,root) %{_libdir}/evolution/%{evo_ver}/plugins/liborg-jylefort-mail-notification.so
+%{_libdir}/evolution/%{evo_ver}/plugins/org-jylefort-mail-notification.eplug
