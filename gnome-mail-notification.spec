@@ -1,41 +1,55 @@
-%define		evo_ver	2.12
+%define		evo_ver	2.22
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.0
 Release:	1
-License:	GPL
+License:	GPL v3
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
 # Source0-md5:	66bc819ef62a050627627b3496e4dfe8
 Patch0:		%{name}-desktop.patch
+Patch1:		%{name}-eelfix.patch
 URL:		http://www.nongnu.org/mailnotify/
+BuildRequires:	GConf2-devel >= 2.22.0
+BuildRequires:	autoconf >= 2.59
+BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	eel-devel >= 2.14.1
-BuildRequires:	evolution-devel >= 2.12.0
+BuildRequires:	eel-devel >= 2.22.0
+BuildRequires:	evolution-devel >= 2.22.0
+BuildRequires:	gettext-devel
 BuildRequires:	gmime-devel >= 2.1.19
-BuildRequires:	gnet-devel >= 2.0.0
-BuildRequires:	libgnomeui-devel >= 2.14.1
-BuildRequires:	libicu-devel >= 2.6
-BuildRequires:	libnotify-devel
-BuildRequires:	libsoup-devel >= 2.2.7
+BuildRequires:	gnome-keyring-devel >= 2.22.0
+BuildRequires:	gnome-vfs2-devel >= 2.22.0
+BuildRequires:	gtk+2-devel >= 2:2.12.8
+BuildRequires:	intltool >= 0.36.2
+BuildRequires:	libbonobo-devel >= 2.22.0
+BuildRequires:	libglade2-devel >= 1:2.6.2
+BuildRequires:	libgnomeui-devel >= 2.22.01
+BuildRequires:	libnotify-devel >= 0.4.1
+BuildRequires:	libtool
+BuildRequires:	libxml2-devel >= 1:2.6.31
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.197
+BuildRequires:	rpmbuild(find_lang) >= 1.23
+BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	scrollkeeper
-Requires(post,preun):	GConf2 >= 2.14.0
+BuildRequires:	sed >= 4.0
+Requires(post,postun):	gtk+2
+Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	scrollkeeper
+Requires(post,preun):	GConf2
 Requires:	gmime >= 2.1.19
-Requires:	libgnomeui >= 2.14.1
+Requires:	libgnomeui >= 2.22.01
 # sr@Latn vs. sr@latin
 Conflicts:	glibc-misc < 6:2.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Mail Notification is an icon for the GNOME Notification Area that
-informs users if they have new mail. It handles multiple folders
-and multiple folder formats.
+informs users if they have new mail. It handles multiple folders and
+multiple folder formats.
 
 %description -l pl.UTF-8
 Mail Notification to ikona dla obszaru powiadamiania GNOME informująca
@@ -47,7 +61,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.12.0
+Requires:	evolution >= 2.22.0
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
@@ -58,12 +72,23 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %prep
 %setup -q -n %{rname}-%{version}
 %patch0 -p1
+%patch1 -p0
+
+sed -i -e 's#sr@Latn#sr@latin#' po/LINGUAS
+mv po/sr@{Latn,latin}.po
 
 %build
+%{__intltoolize}
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
 	--disable-schemas-install \
 	--disable-static \
 	--with-evolution-source-dir=%{_includedir}/evolution-%{evo_ver}
+
 %{__make}
 
 %install
@@ -71,14 +96,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 \
-	autostartdir=%{_datadir}/gnome/autostart
+	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/%{evo_ver}/plugins/*.la
 
-[ -d $RPM_BUILD_ROOT%{_datadir}/locale/sr@latin ] || \
-	mv -f $RPM_BUILD_ROOT%{_datadir}/locale/sr@{Latn,latin}
-%find_lang %{rname} --all-name --with-gnome
+%find_lang %{rname} --all-name --with-gnome --with-omf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -86,23 +108,26 @@ rm -rf $RPM_BUILD_ROOT
 %post
 %scrollkeeper_update_post
 %gconf_schema_install mail-notification.schemas
+%update_icon_cache hicolor
 
 %preun
 %gconf_schema_uninstall mail-notification.schemas
 
 %postun
 %scrollkeeper_update_postun
+%update_icon_cache hicolor
 
 %files -f %{rname}.lang
 %defattr(644,root,root,755)
 %doc NEWS README TODO
 %attr(755,root,root) %{_bindir}/mail-notification
-%{_datadir}/%{rname}
-%{_datadir}/gnome/autostart/mail-notification.desktop
-%{_desktopdir}/*.desktop
-%{_libdir}/bonobo/servers/*
-%{_omf_dest_dir}/%{rname}
-%{_iconsdir}/*/*/*/*
+%{_datadir}/mail-notification
+%{_sysconfdir}/xdg/autostart/mail-notification.desktop
+%{_desktopdir}/mail-notification-properties.desktop
+%{_libdir}/bonobo/servers/GNOME_MailNotification.server
+%{_libdir}/bonobo/servers/GNOME_MailNotification_Evolution.server
+%{_iconsdir}/hicolor/*/*/*.png
+%{_iconsdir}/hicolor/*/*/*.svg
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
 
 %files -n evolution-plugin-mail-notification
