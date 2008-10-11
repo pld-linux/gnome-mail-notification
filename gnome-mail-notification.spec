@@ -1,14 +1,14 @@
-%define		evo_ver	2.22
+%define		evo_ver	2.24
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
-Version:	5.0
-Release:	2
+Version:	5.3
+Release:	1
 License:	GPL v3
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
-# Source0-md5:	66bc819ef62a050627627b3496e4dfe8
+# Source0-md5:	e793ee88f4c953c1876b6b30a3f08366
 Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-eelfix.patch
 URL:		http://www.nongnu.org/mailnotify/
@@ -71,34 +71,19 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %prep
 %setup -q -n %{rname}-%{version}
-%patch0 -p1
-%patch1 -p0
-
-sed -i -e 's#sr@Latn#sr@latin#' po/LINGUAS
-mv po/sr@{Latn,latin}.po
 
 %build
-%{__intltoolize}
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-schemas-install \
-	--disable-static \
-	--with-evolution-source-dir=%{_includedir}/evolution-%{evo_ver}
-
-%{__make}
+./jb configure \
+		destdir=$RPM_BUILD_ROOT \
+		sysconfdir=%{_sysconfdir} \
+		localstatedir=%{_var} \
+		install-gconf-schemas=no 
+./jb build 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
-
-rm -f $RPM_BUILD_ROOT%{_libdir}/evolution/%{evo_ver}/plugins/*.la
+./jb install
 
 %find_lang %{rname} --all-name --with-gnome --with-omf
 
@@ -124,8 +109,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mail-notification
 %{_sysconfdir}/xdg/autostart/mail-notification.desktop
 %{_desktopdir}/mail-notification-properties.desktop
-%{_libdir}/bonobo/servers/GNOME_MailNotification.server
-%{_libdir}/bonobo/servers/GNOME_MailNotification_Evolution.server
 %{_iconsdir}/hicolor/*/*/*.png
 %{_iconsdir}/hicolor/*/*/*.svg
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
