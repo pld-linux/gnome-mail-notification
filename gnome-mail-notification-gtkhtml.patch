@@ -1,0 +1,12 @@
+diff -urN mail-notification-5.4/jbsrc/lib/src/extras/jb-evolution-plugin.c mail-notification-5.4.new/jbsrc/lib/src/extras/jb-evolution-plugin.c
+--- mail-notification-5.4/jbsrc/lib/src/extras/jb-evolution-plugin.c	2008-04-27 16:47:43.000000000 +0200
++++ mail-notification-5.4.new/jbsrc/lib/src/extras/jb-evolution-plugin.c	2009-12-31 19:07:03.161210385 +0100
+@@ -41,7 +41,7 @@
+   if (! minversion)
+     minversion = "2.12";
+ 
+-  packages = g_strdup_printf("evolution-plugin >= %s", minversion);
++  packages = g_strdup_printf("evolution-plugin >= %s gtkhtml-editor", minversion);
+   result = jb_check_packages("Evolution", "evolution-plugin", packages);
+   g_free(packages);
+ 
