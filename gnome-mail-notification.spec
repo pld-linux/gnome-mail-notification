@@ -19,6 +19,7 @@ BuildRequires:	eel-devel >= 2.22.0
 BuildRequires:	evolution-devel >= 2.22.0
 BuildRequires:	gettext-devel
 BuildRequires:	gmime-devel >= 2.1.19
+BuildRequires:	gmime22-devel
 BuildRequires:	gnome-keyring-devel >= 2.22.0
 BuildRequires:	gnome-vfs2-devel >= 2.22.0
 BuildRequires:	gtk+2-devel >= 2:2.12.8
@@ -77,8 +78,8 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 		destdir=$RPM_BUILD_ROOT \
 		sysconfdir=%{_sysconfdir} \
 		localstatedir=%{_var} \
-		install-gconf-schemas=no 
-./jb build 
+		install-gconf-schemas=no
+./jb build
 
 %install
 rm -rf $RPM_BUILD_ROOT
