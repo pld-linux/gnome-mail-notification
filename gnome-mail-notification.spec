@@ -1,28 +1,31 @@
-%define		evo_ver	2.32
+%define		evo_ver	3.0
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.4
 Release:	10
-License:	GPL v3
+License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
 # Source0-md5:	c8dc33a61251acb5474e56eab6b18f43
-Patch0:		%{name}-gtkhtml.patch
-Patch1:		%{name}-build.patch
+Patch0:		%{name}-evolution.patch
+Patch1:		%{name}-evolution-gtkhtml.patch
+Patch3:		%{name}-camel_headers.patch
+Patch4:		%{name}-evolution-3-0.patch
+Patch5:		%{name}-gtk3-support.patch
 URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	GConf2-devel >= 2.22.0
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	evolution-devel >= 2.32.0
+BuildRequires:	evolution-devel >= 3.0.0
 BuildRequires:	gettext-devel
 BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gmime22-devel
-BuildRequires:	gnome-keyring-devel >= 2.22.0
+BuildRequires:	gnome-keyring-devel >= 3.0.0
 BuildRequires:	gnome-vfs2-devel >= 2.22.0
-BuildRequires:	gtk+2-devel >= 2:2.12.8
+BuildRequires:	gtk+3-devel >= 3.0.0
 BuildRequires:	intltool >= 0.36.2
 BuildRequires:	libbonobo-devel >= 2.22.0
 BuildRequires:	libglade2-devel >= 1:2.6.2
@@ -62,7 +65,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 2.32.0
+Requires:	evolution >= 3.0.0
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
@@ -74,6 +77,9 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %setup -q -n %{rname}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch3 -p1
+%patch4 -p0
+%patch5 -p0
 
 %build
 ./jb configure \
