@@ -76,6 +76,15 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %prep
 %setup -q -n %{rname}-%{version}
+
+# Convert the Glade UI to GtkBuilder
+cd ui
+gtk-builder-convert mailbox-properties-dialog.glade mailbox-properties-dialog.ui
+gtk-builder-convert properties-dialog.glade properties-dialog.ui
+sed -i s@'<property name="has_separator">False</property>'@@ mailbox-properties-dialog.ui
+sed -i s@'<property name="has_separator">False</property>'@@ properties-dialog.ui
+cd -
+
 %patch0 -p1
 %patch1 -p1
 %patch3 -p1

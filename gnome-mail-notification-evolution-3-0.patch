@@ -5,7 +5,7 @@
      minversion = "2.12";
  
 -  packages = g_strdup_printf("evolution-plugin >= %s libgtkhtml-3.15 gtkhtml-editor-3.14", minversion);
-+  packages = g_strdup_printf("evolution-plugin-3.0 >= %s libgtkhtml-4.0 gtkhtml-editor-4.0", minversion);
++  packages = g_strdup_printf("evolution-plugin-3.0 >= %s evolution-shell-3.0", minversion);
    result = jb_check_packages("Evolution", "evolution-plugin", packages);
    g_free(packages);
  
@@ -20,20 +20,37 @@
        if (! plugindir)
 --- src/mn-evolution-plugin.c.orig	2011-02-09 00:07:37.422002566 +0100
 +++ src/mn-evolution-plugin.c	2011-02-09 00:12:43.652678682 +0100
-@@ -25,6 +25,7 @@
+@@ -25,8 +25,10 @@
  #include <dbus/dbus-glib-lowlevel.h>
  #include <dbus/dbus-glib-bindings.h>
  #include <camel/camel.h>
 +#include <libedataserver/eds-version.h>
  #include <mail/em-event.h>
  #include <mail/mail-tools.h>
++#include <mail/e-mail-folder-utils.h>
  #include "mn-evolution.h"
-@@ -249,10 +250,16 @@
+ #include "mn-evolution-server.h"
+ #include "mn-evolution-plugin.h"
+@@ -240,7 +242,11 @@
+ 					       EMEventTargetFolder *folder)
+ {
+   if (evo_server)
++#if EDS_CHECK_VERSION(3,1,0)
++    mn_evolution_server_folder_changed(evo_server, e_mail_folder_uri_build(folder->store, folder->folder_name));
++#else
+     mn_evolution_server_folder_changed(evo_server, folder->uri);
++#endif
+ }
+ 
+ void
+@@ -249,10 +255,18 @@
  {
    if (evo_server)
      {
 -      char *url;
-+#if EDS_CHECK_VERSION(2,91,0)
++#if EDS_CHECK_VERSION(3,1,0)
++      char *url = e_mail_folder_uri_from_folder(message->folder);
++#elif EDS_CHECK_VERSION(2,91,0)
 +      const char *url = camel_folder_get_uri(message->folder);
 +#else
 +      char *url = mail_tools_folder_to_url(message->folder);
@@ -42,14 +59,14 @@
 -      url = mail_tools_folder_to_url(message->folder);
        mn_evolution_server_message_reading(evo_server, url);
 +
-+#if !EDS_CHECK_VERSION(2,91,0)
++#if EDS_CHECK_VERSION(3,1,0) || !EDS_CHECK_VERSION(2,91,0)
        g_free(url);
 +#endif
      }
  }
 --- build/src/mn-evolution-server.c.orig	2011-02-09 00:17:38.850944227 +0100
 +++ build/src/mn-evolution-server.c	2011-02-09 22:21:54.155346478 +0100
-@@ -496,11 +496,15 @@
+@@ -496,11 +422,23 @@
  
      if (! folder)
        {
@@ -58,7 +75,15 @@
 -	      NULL,
 +        static EMailSession * session = NULL;
 +        if (!session)
-+          session = e_mail_session_new();
++          {
++#if EDS_CHECK_VERSION(3,1,0)
++            EShell *shell = e_shell_get_default();
++            EShellBackend *shell_backend = e_shell_get_backend_by_name(shell, "mail");
++            session = E_MAIL_SESSION(e_mail_backend_get_session(E_MAIL_BACKEND(shell_backend)));
++#else
++            session = e_mail_session_new();
++#endif
++          }
 +
 +        folder = e_mail_session_uri_to_folder_sync(session, uri, 0, NULL, NULL);
 +#else
@@ -68,3 +93,196 @@
  	if (folder)
  	  self_cache_folder(uri, folder);
  	else
+@@ -677,7 +681,12 @@
+     folder = self_lookup_folder(folder_uri, err);
+     if (folder)
+       {
++#if EDS_CHECK_VERSION(3,1,0)
++	*ret = g_strdup(camel_folder_get_display_name(folder));
++#else
+ 	*ret = g_strdup(camel_folder_get_name(folder));
++#endif
++
+ #if EDS_CHECK_VERSION(2,31,0)
+ 	g_object_unref(folder);
+ #else
+@@ -725,8 +734,12 @@
+ 	shell = e_shell_get_default ();
+ 	shell_backend = e_shell_get_backend_by_name (shell, "mail");
+ 
+-	browser = e_mail_browser_new (shell_backend);
++	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
++#if EDS_CHECK_VERSION(3,1,0)
++	e_mail_reader_set_folder (E_MAIL_READER (browser), folder);
++#else
+ 	e_mail_reader_set_folder (E_MAIL_READER (browser), folder, folder_uri);
++#endif
+ 	e_mail_reader_set_message (E_MAIL_READER (browser), message_uid);
+ 	gtk_widget_show (browser);
+ #else
+--- build/src/mn-evolution-folder-tree-server.c.orig	2011-06-17 22:01:49.226886994 +0200
++++ build/src/mn-evolution-folder-tree-server.c	2011-06-18 00:34:23.046889847 +0200
+@@ -29,6 +29,12 @@
+ #if !EDS_CHECK_VERSION(2,29,0)
+ #include <mail/mail-component.h>
+ #endif
++#if EDS_CHECK_VERSION(3,1,0)
++#include <mail/e-mail-folder-utils.h>
++#include <mail/e-mail-browser.h>
++#include <mail/e-mail-reader.h>
++#include <shell/e-shell.h>
++#endif
+ #include <mail/em-folder-tree.h>
+ #include "mn-evolution-plugin.h"
+ #include "mn-evolution.h"
+@@ -72,12 +78,17 @@
+ #line 70 "mn-evolution-folder-tree-server.c"
+ #line 84 "src/mn-evolution-folder-tree-server.gob"
+ static void mn_evolution_folder_tree_server_plug_destroy_h (GtkObject * object, gpointer user_data);
++#if EDS_CHECK_VERSION(3,1,0)
++static void mn_evolution_folder_tree_server_selected_h (EMFolderTree * tree, CamelStore * store, const char * folder_name, guint32 flags, gpointer user_data);
++static void mn_evolution_folder_tree_server_activated_h (EMFolderTree * tree, CamelStore * store, const char * folder_name, gpointer user_data);
++#else
+ #line 73 "mn-evolution-folder-tree-server.c"
+ #line 104 "src/mn-evolution-folder-tree-server.gob"
+ static void mn_evolution_folder_tree_server_selected_h (EMFolderTree * tree, const char * full_name, const char * uri, guint32 flags, gpointer user_data);
+ #line 76 "mn-evolution-folder-tree-server.c"
+ #line 115 "src/mn-evolution-folder-tree-server.gob"
+ static void mn_evolution_folder_tree_server_activated_h (EMFolderTree * tree, const char * full_name, const char * uri, gpointer user_data);
++#endif
+ #line 79 "mn-evolution-folder-tree-server.c"
+ 
+ /*
+@@ -444,7 +455,17 @@
+ {
+ #line 61 "src/mn-evolution-folder-tree-server.gob"
+ 	
+-#if EDS_CHECK_VERSION(2,91,0)
++#if EDS_CHECK_VERSION(3,1,0)
++    EShell *shell = e_shell_get_default();
++    EShellBackend *shell_backend = e_shell_get_backend_by_name(shell, "mail");
++    GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
++    EAlertSink *alert_sink = e_mail_reader_get_alert_sink(E_MAIL_READER(browser));
++#if EDS_CHECK_VERSION(3,4,0)
++    selfp->tree = em_folder_tree_new(e_mail_session_new(), alert_sink);
++#else
++    selfp->tree = em_folder_tree_new(E_MAIL_BACKEND(shell_backend), alert_sink);
++#endif
++#elif EDS_CHECK_VERSION(2,91,0)
+     selfp->session = e_mail_session_new();
+     selfp->tree = em_folder_tree_new(selfp->session);
+ #elif EDS_CHECK_VERSION(2,29,0)
+@@ -480,8 +497,11 @@
+ #line 80 "src/mn-evolution-folder-tree-server.gob"
+ 	
+ #if EDS_CHECK_VERSION(2,91,0)
+-    g_object_unref(selfp->session);
+-    selfp->session = NULL;
++    if (selfp->session)
++      {
++        g_object_unref(selfp->session);
++        selfp->session = NULL;
++      }
+ #endif
+     g_signal_handlers_disconnect_by_func(selfp->plug, self_plug_destroy_h, self);
+   }}
+@@ -516,6 +536,29 @@
+ #line 503 "mn-evolution-folder-tree-server.c"
+ #undef __GOB_FUNCTION__
+ 
++#if EDS_CHECK_VERSION(3,1,0)
++static void
++mn_evolution_folder_tree_server_selected_h (EMFolderTree * tree, CamelStore * store, const char * folder_name, guint32 flags, gpointer user_data)
++{
++    Self *self = user_data;
++    char *uri;
++
++    if (!folder_name) return;
++
++    uri = e_mail_folder_uri_build(store, folder_name);
++    self_folder_selected(self, uri);
++    g_free(uri);
++}
++
++static void
++mn_evolution_folder_tree_server_activated_h (EMFolderTree * tree, CamelStore * store, const char * folder_name, gpointer user_data)
++{
++    Self *self = user_data;
++    self_folder_activated(self);
++}
++
++#else
++
+ #line 104 "src/mn-evolution-folder-tree-server.gob"
+ static void 
+ mn_evolution_folder_tree_server_selected_h (EMFolderTree * tree, const char * full_name, const char * uri, guint32 flags, gpointer user_data)
+@@ -546,6 +589,8 @@
+ #line 533 "mn-evolution-folder-tree-server.c"
+ #undef __GOB_FUNCTION__
+ 
++#endif
++
+ #line 125 "src/mn-evolution-folder-tree-server.gob"
+ MNEvolutionFolderTreeServer * 
+ mn_evolution_folder_tree_server_new (guint32 id)
+--- build/src/mn-evolution-mailbox-properties.c.orig	2011-12-04 16:23:29.197007315 +0100
++++ build/src/mn-evolution-mailbox-properties.c	2011-12-04 19:11:07.103199549 +0100
+@@ -165,12 +165,20 @@
+ 
+     MNMailboxProperties *properties = MN_MAILBOX_PROPERTIES(self);
+     GtkWidget *vbox;
++    GtkWidget *scrolled_window;
+ 
+     /* translators: header capitalization */
+     vbox = mn_mailbox_properties_add_general_section(properties, _("Folder"));
+ 
+     selfp->tree = mn_evolution_folder_tree_client_new();
+-    gtk_box_pack_start(GTK_BOX(vbox), selfp->tree, TRUE, TRUE, 0);
++    
++    scrolled_window = gtk_scrolled_window_new(NULL, NULL);
++    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
++    gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scrolled_window), selfp->tree);
++
++    gtk_box_pack_start(GTK_BOX(vbox), scrolled_window, TRUE, TRUE, 0);
++
++    gtk_widget_show(scrolled_window);
+     gtk_widget_show(selfp->tree);
+ 
+     g_object_connect(selfp->tree,
+@@ -236,6 +244,8 @@
+     if (client->proxy)
+       org_gnome_MailNotification_Evolution_get_folder_name(client->proxy, MN_EVOLUTION_FOLDER_TREE_CLIENT(selfp->tree)->selected_uri, &name, NULL);
+ 
++    g_return_if_fail(name != NULL);
++
+     g_free(selfp->name);
+     selfp->name = name;
+ 
+--- build/src/mn-evolution-folder-tree-server.c.orig	2012-05-09 22:30:51.870995975 +0200
++++ build/src/mn-evolution-folder-tree-server.c	2012-05-09 22:32:06.031523970 +0200
+@@ -416,7 +416,11 @@
+ #if EDS_CHECK_VERSION(3,1,0)
+     EShell *shell = e_shell_get_default();
+     EShellBackend *shell_backend = e_shell_get_backend_by_name(shell, "mail");
++#if EDS_CHECK_VERSION(3,5,1)
++    GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, EM_FORMAT_WRITE_MODE_NORMAL);
++#else
+     GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
++#endif
+     EAlertSink *alert_sink = e_mail_reader_get_alert_sink(E_MAIL_READER(browser));
+ #if EDS_CHECK_VERSION(3,4,0)
+     selfp->tree = em_folder_tree_new(e_mail_session_new(), alert_sink);
+--- build/src/mn-evolution-server.c.orig	2012-05-09 22:40:19.949022881 +0200
++++ build/src/mn-evolution-server.c	2012-05-09 22:41:09.307372669 +0200
+@@ -636,7 +636,11 @@
+ 	shell = e_shell_get_default ();
+ 	shell_backend = e_shell_get_backend_by_name (shell, "mail");
+ 
++#if EDS_CHECK_VERSION(3,5,1)
++	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, EM_FORMAT_WRITE_MODE_NORMAL);
++#else
+ 	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
++#endif
+ #if EDS_CHECK_VERSION(3,1,0)
+ 	e_mail_reader_set_folder (E_MAIL_READER (browser), folder);
+ #else
