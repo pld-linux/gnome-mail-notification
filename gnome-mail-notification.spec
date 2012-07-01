@@ -94,10 +94,11 @@ cd -
 
 %build
 ./jb configure \
-		destdir=$RPM_BUILD_ROOT \
-		sysconfdir=%{_sysconfdir} \
-		localstatedir=%{_var} \
-		install-gconf-schemas=no
+	libs="-lX11" \
+	destdir=$RPM_BUILD_ROOT \
+	sysconfdir=%{_sysconfdir} \
+	localstatedir=%{_var} \
+	install-gconf-schemas=no
 ./jb build
 
 %install
