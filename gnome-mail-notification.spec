@@ -14,6 +14,7 @@ Patch1:		%{name}-evolution-gtkhtml.patch
 Patch3:		%{name}-camel_headers.patch
 Patch4:		%{name}-evolution-3-0.patch
 Patch5:		%{name}-gtk3-support.patch
+Patch6:		%{name}-libemail.patch
 URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	GConf2-devel >= 2.22.0
 BuildRequires:	autoconf >= 2.59
@@ -80,6 +81,7 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %patch3 -p1
 %patch4 -p0
 %patch5 -p0
+%patch6 -p1
 
 %build
 ./jb configure \
