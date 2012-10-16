@@ -1,3 +1,6 @@
+#
+# TODO: switch to https://github.com/epienbroek/mail-notification
+#
 %define		evo_ver	3.4
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
