@@ -281,7 +281,7 @@
      selfp->tree = em_folder_tree_new(E_MAIL_BACKEND(shell_backend), alert_sink);
 --- build/src/mn-evolution-server.c.orig	2012-05-09 22:40:19.949022881 +0200
 +++ build/src/mn-evolution-server.c	2012-05-09 22:41:09.307372669 +0200
-@@ -636,7 +636,11 @@
+@@ -636,7 +636,13 @@
  	shell = e_shell_get_default ();
  	shell_backend = e_shell_get_backend_by_name (shell, "mail");
  
