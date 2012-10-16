@@ -260,25 +260,34 @@
  
 --- build/src/mn-evolution-folder-tree-server.c.orig	2012-05-09 22:30:51.870995975 +0200
 +++ build/src/mn-evolution-folder-tree-server.c	2012-05-09 22:32:06.031523970 +0200
-@@ -416,7 +416,11 @@
+@@ -416,9 +416,17 @@
  #if EDS_CHECK_VERSION(3,1,0)
      EShell *shell = e_shell_get_default();
      EShellBackend *shell_backend = e_shell_get_backend_by_name(shell, "mail");
-+#if EDS_CHECK_VERSION(3,5,1)
++#if EDS_CHECK_VERSION(3,5,3)
++    GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, E_MAIL_FORMATTER_MODE_NORMAL);
++#elif EDS_CHECK_VERSION(3,5,1)
 +    GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, EM_FORMAT_WRITE_MODE_NORMAL);
 +#else
      GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
 +#endif
      EAlertSink *alert_sink = e_mail_reader_get_alert_sink(E_MAIL_READER(browser));
- #if EDS_CHECK_VERSION(3,4,0)
+-#if EDS_CHECK_VERSION(3,4,0)
++#if EDS_CHECK_VERSION(3,5,3)
++    selfp->tree = em_folder_tree_new(e_mail_session_new(e_shell_get_registry (shell)), alert_sink);
++#elif EDS_CHECK_VERSION(3,4,0)
      selfp->tree = em_folder_tree_new(e_mail_session_new(), alert_sink);
+ #else
+     selfp->tree = em_folder_tree_new(E_MAIL_BACKEND(shell_backend), alert_sink);
 --- build/src/mn-evolution-server.c.orig	2012-05-09 22:40:19.949022881 +0200
 +++ build/src/mn-evolution-server.c	2012-05-09 22:41:09.307372669 +0200
 @@ -636,7 +636,11 @@
  	shell = e_shell_get_default ();
  	shell_backend = e_shell_get_backend_by_name (shell, "mail");
  
-+#if EDS_CHECK_VERSION(3,5,1)
++#if EDS_CHECK_VERSION(3,5,3)
++	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, E_MAIL_FORMATTER_MODE_NORMAL);
++#elif EDS_CHECK_VERSION(3,5,1)
 +	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, EM_FORMAT_WRITE_MODE_NORMAL);
 +#else
  	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
