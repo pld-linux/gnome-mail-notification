@@ -1,17 +1,14 @@
-#
-# TODO: switch to https://github.com/epienbroek/mail-notification
-#
-%define		evo_ver	3.4
+%define		evo_ver	3.6
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.4
-Release:	14
+Release:	15
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://savannah.nongnu.org/download/mailnotify/%{rname}-%{version}.tar.bz2
-# Source0-md5:	c8dc33a61251acb5474e56eab6b18f43
+Source0:	https://github.com/epienbroek/mail-notification/tarball/master/%{rname}-%{version}.tar.gz
+# Source0-md5:	899c92fff00575ae25fe37090287792b
 Patch0:		%{name}-evolution.patch
 Patch1:		%{name}-evolution-gtkhtml.patch
 Patch3:		%{name}-camel_headers.patch
@@ -78,22 +75,7 @@ Evolution mailbox support for Mail Notification.
 Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %prep
-%setup -q -n %{rname}-%{version}
-
-# Convert the Glade UI to GtkBuilder
-cd ui
-gtk-builder-convert mailbox-properties-dialog.glade mailbox-properties-dialog.ui
-gtk-builder-convert properties-dialog.glade properties-dialog.ui
-sed -i s@'<property name="has_separator">False</property>'@@ mailbox-properties-dialog.ui
-sed -i s@'<property name="has_separator">False</property>'@@ properties-dialog.ui
-cd -
-
-%patch0 -p1
-%patch1 -p1
-%patch3 -p1
-%patch4 -p0
-%patch5 -p0
-%patch6 -p1
+%setup -q -n epienbroek-%{rname}-b4ca832
 
 %build
 ./jb configure \
@@ -102,6 +84,7 @@ cd -
 	sysconfdir=%{_sysconfdir} \
 	localstatedir=%{_var} \
 	install-gconf-schemas=no
+
 ./jb build
 
 %install
@@ -110,8 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 ./jb install
 
 # install also GtkBuilder files
-cp -p ui/mailbox-properties-dialog.ui $RPM_BUILD_ROOT%{_datadir}/mail-notification
-cp -p ui/properties-dialog.ui $RPM_BUILD_ROOT%{_datadir}/mail-notification
+#cp -p ui/mailbox-properties-dialog.ui $RPM_BUILD_ROOT%{_datadir}/mail-notification
+#cp -p ui/properties-dialog.ui $RPM_BUILD_ROOT%{_datadir}/mail-notification
 
 %find_lang %{rname} --all-name --with-gnome --with-omf
 
