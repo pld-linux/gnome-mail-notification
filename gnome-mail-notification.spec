@@ -9,12 +9,6 @@ License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://github.com/epienbroek/mail-notification/tarball/master/%{rname}-%{version}.tar.gz
 # Source0-md5:	899c92fff00575ae25fe37090287792b
-Patch0:		%{name}-evolution.patch
-Patch1:		%{name}-evolution-gtkhtml.patch
-Patch3:		%{name}-camel_headers.patch
-Patch4:		%{name}-evolution-3-0.patch
-Patch5:		%{name}-gtk3-support.patch
-Patch6:		%{name}-libemail.patch
 URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	GConf2-devel >= 2.22.0
 BuildRequires:	autoconf >= 2.59
