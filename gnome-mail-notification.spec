@@ -19,6 +19,7 @@ BuildRequires:	evolution-devel >= 3.0.0
 BuildRequires:	gettext-devel
 BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gmime22-devel
+BuildRequires:	gob2 >= 2.0.17
 BuildRequires:	libgnome-keyring-devel >= 3.0.0
 BuildRequires:	gnome-vfs2-devel >= 2.22.0
 BuildRequires:	gtk+3-devel >= 3.0.0
