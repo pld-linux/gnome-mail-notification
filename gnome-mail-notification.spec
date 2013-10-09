@@ -1,4 +1,4 @@
-%define		evo_ver	3.8
+%define		evo_ver	3.10
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
