@@ -1,0 +1,12 @@
+diff -uNr gmn.bak/jbsrc/lib/src/extras/jb-evolution-plugin.c gmn/jbsrc/lib/src/extras/jb-evolution-plugin.c
+--- gmn.bak/jbsrc/lib/src/extras/jb-evolution-plugin.c	2013-02-10 20:57:29.000000000 +0100
++++ gmn/jbsrc/lib/src/extras/jb-evolution-plugin.c	2014-04-15 16:13:39.973888229 +0200
+@@ -41,7 +41,7 @@
+   if (! minversion)
+     minversion = "2.12";
+ 
+-  packages = g_strdup_printf("evolution-plugin-3.0 >= %s evolution-shell-3.0 libemail-engine", minversion);
++  packages = g_strdup_printf("evolution-shell-3.0 >= %s libemail-engine", minversion);
+   result = jb_check_packages("Evolution", "evolution-plugin", packages);
+   g_free(packages);
+ 

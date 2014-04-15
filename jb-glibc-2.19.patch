@@ -1,0 +1,11 @@
+diff -uNr gmn.bak/jbsrc/jb.c gmn/jbsrc/jb.c
+--- gmn.bak/jbsrc/jb.c	2013-02-10 20:57:29.000000000 +0100
++++ gmn/jbsrc/jb.c	2014-04-15 15:09:15.458112448 +0200
+@@ -432,7 +432,6 @@
+        */
+       jb_compile_options_add_cflags(object->compile_options, "-std=c99");
+       jb_compile_options_add_cppflags(object->compile_options, "-D_BSD_SOURCE -D_POSIX_C_SOURCE=199309L");
+-      jb_compile_options_add_libs(object->compile_options, "-lbsd-compat");
+     }
+ 
+   jb_compile_options_add_string_defines(object->compile_options,
