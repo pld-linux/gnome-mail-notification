@@ -19,7 +19,7 @@ BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
 BuildRequires:	evolution-devel >= 3.0.0
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	gmime-devel >= 2.1.19
 BuildRequires:	gmime22-devel
 BuildRequires:	gnome-vfs2-devel >= 2.22.0
