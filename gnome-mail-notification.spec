@@ -1,10 +1,10 @@
-%define		evo_ver	3.12
+%define		evo_ver	3.16
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.4
-Release:	19
+Release:	20
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://github.com/epienbroek/mail-notification/tarball/master/%{rname}-%{version}.tar.gz
@@ -13,6 +13,7 @@ Patch0:		mail-notification-jb-gcc-format.patch
 Patch1:		jb-glibc-2.19.patch
 Patch2:		jb-evolution-plugin-detect.patch
 Patch3:		evolution-3.12.patch
+Patch4:		evolution-3.16.patch
 URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	GConf2-devel >= 2.22.0
 BuildRequires:	autoconf >= 2.59
@@ -79,6 +80,7 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 ./jb configure \

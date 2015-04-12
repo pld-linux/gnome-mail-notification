@@ -1,0 +1,26 @@
+--- epienbroek-mail-notification-45d11d2/src/mn-evolution-folder-tree-server.gob~	2015-04-12 11:28:14.000000000 +0200
++++ epienbroek-mail-notification-45d11d2/src/mn-evolution-folder-tree-server.gob	2015-04-12 12:23:10.500641532 +0200
+@@ -96,7 +96,9 @@
+ #if EDS_CHECK_VERSION(3,1,0)
+     EShell *shell = e_shell_get_default();
+     EShellBackend *shell_backend = e_shell_get_backend_by_name(shell, "mail");
+-#if EDS_CHECK_VERSION(3,5,1)
++#if EDS_CHECK_VERSION(3,16,0)
++    GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), E_MAIL_FORMATTER_MODE_NORMAL);
++#elif EDS_CHECK_VERSION(3,5,1)
+     GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, E_MAIL_FORMATTER_MODE_NORMAL);
+ #else
+     GtkWidget *browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
+--- epienbroek-mail-notification-45d11d2/src/mn-evolution-server.gob~	2015-04-12 11:28:14.000000000 +0200
++++ epienbroek-mail-notification-45d11d2/src/mn-evolution-server.gob	2015-04-12 12:28:57.267305686 +0200
+@@ -378,7 +378,9 @@
+ 	shell = e_shell_get_default ();
+ 	shell_backend = e_shell_get_backend_by_name (shell, "mail");
+ 
+-#if EDS_CHECK_VERSION(3,5,1)
++#if EDS_CHECK_VERSION(3,16,0)
++	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), E_MAIL_FORMATTER_MODE_NORMAL);
++#elif EDS_CHECK_VERSION(3,5,1)
+ 	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend), NULL, NULL, E_MAIL_FORMATTER_MODE_NORMAL);
+ #else
+ 	browser = e_mail_browser_new (E_MAIL_BACKEND(shell_backend));
