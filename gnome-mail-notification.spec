@@ -1,10 +1,9 @@
-%define		evo_ver	3.16
 %define		rname mail-notification
 Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.4
-Release:	20
+Release:	21
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://github.com/epienbroek/mail-notification/tarball/master/%{rname}-%{version}.tar.gz
@@ -89,7 +88,7 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 	sysconfdir=%{_sysconfdir} \
 	localstatedir=%{_var} \
 	install-gconf-schemas=no \
-	evolution-plugin-dir=%{_libdir}/evolution/%{evo_ver}/plugins/
+	evolution-plugin-dir=%{_libdir}/evolution/plugins/
 
 ./jb build
 
@@ -132,5 +131,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n evolution-plugin-mail-notification
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/evolution/%{evo_ver}/plugins/liborg-jylefort-mail-notification.so
-%{_libdir}/evolution/%{evo_ver}/plugins/org-jylefort-mail-notification.eplug
+%attr(755,root,root) %{_libdir}/evolution/plugins/liborg-jylefort-mail-notification.so
+%{_libdir}/evolution/plugins/org-jylefort-mail-notification.eplug
