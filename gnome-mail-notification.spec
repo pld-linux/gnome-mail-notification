@@ -83,10 +83,15 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %build
 ./jb configure \
+	prefix=%{_prefix} \
+	bindir=%{_bindir} \
+	sysconfdir=%{_sysconfdir} \
+	datadir=%{_datadir} \
+	libdir=%{_libdir} \
+	libexecdir=%{_libexecdir} \
+	localstatedir=%{_localstatedir} \
 	libs="-lX11" \
 	destdir=$RPM_BUILD_ROOT \
-	sysconfdir=%{_sysconfdir} \
-	localstatedir=%{_var} \
 	install-gconf-schemas=no \
 	evolution-plugin-dir=%{_libdir}/evolution/plugins/
 
