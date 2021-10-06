@@ -3,7 +3,7 @@ Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.4
-Release:	23
+Release:	24
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://github.com/epienbroek/mail-notification/tarball/master/%{rname}-%{version}.tar.gz
@@ -83,6 +83,9 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %build
 ./jb configure \
+	cflags="%{rpmcflags}" \
+	cppflags="%{rpmcppflags}" \
+	ldflags="%{rpmldflags}" \
 	prefix=%{_prefix} \
 	bindir=%{_bindir} \
 	sysconfdir=%{_sysconfdir} \
