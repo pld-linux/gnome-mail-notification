@@ -1,0 +1,41 @@
+--- epienbroek-mail-notification-45d11d2/src/mn-evolution-server.gob.orig	2025-08-30 19:52:31.622086711 +0200
++++ epienbroek-mail-notification-45d11d2/src/mn-evolution-server.gob	2025-08-30 20:06:42.124005954 +0200
+@@ -238,28 +238,28 @@ class MN:Evolution:Server from G:Object
+   private GValueArray *
+     camel_message_info_to_dbus_struct (CamelMessageInfo *info (check null))
+   {
+-    const CamelSummaryMessageID *id;
++    CamelSummaryMessageID id;
+     char hexhash[sizeof(CamelSummaryMessageID) * 2 + 1];
+     int i;
+ 
+-    id = camel_message_info_message_id(info);
+-    for (i = 0; i < sizeof(id->id.hash); i++)
+-      sprintf(hexhash + i * 2, "%.2x", id->id.hash[i]);
++    id.id.id = camel_message_info_get_message_id(info);
++    for (i = 0; i < sizeof(id.id.hash); i++)
++      sprintf(hexhash + i * 2, "%.2x", id.id.hash[i]);
+ 
+-    g_assert(camel_message_info_uid(info) != NULL);
++    g_assert(camel_message_info_get_uid(info) != NULL);
+ 
+     return self_value_array_new(/* char *uid */
+-				G_TYPE_STRING, camel_message_info_uid(info),
++				G_TYPE_STRING, camel_message_info_get_uid(info),
+ 				/* unsigned int sent_time */
+-				G_TYPE_UINT, (unsigned int) camel_message_info_date_sent(info),
++				G_TYPE_UINT, (unsigned int) camel_message_info_get_date_sent(info),
+ 				/* unsigned int received_time */
+-				G_TYPE_UINT, (unsigned int) camel_message_info_date_received(info),
++				G_TYPE_UINT, (unsigned int) camel_message_info_get_date_received(info),
+ 				/* char *id */
+ 				G_TYPE_STRING, hexhash,
+ 				/* char *from */
+-				G_TYPE_STRING, camel_message_info_from(info),
++				G_TYPE_STRING, camel_message_info_get_from(info),
+ 				/* char *subject */
+-				G_TYPE_STRING, camel_message_info_subject(info),
++				G_TYPE_STRING, camel_message_info_get_subject(info),
+ 				(GType) 0);
+   }
+ 

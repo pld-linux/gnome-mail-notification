@@ -1,0 +1,220 @@
+--- epienbroek-mail-notification-45d11d2/src/mn-mail-icon.gob.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-mail-icon.gob	2025-08-30 20:11:13.312346508 +0200
+@@ -43,7 +43,7 @@
+ class MN:Mail:Icon from Egg:Tray:Icon
+ {
+   private MNTooltips *tooltips = {mn_tooltips_new()} unrefwith g_object_unref;
+-  private GtkWidget *widget = {mn_mail_icon_widget_new()};
++  private GtkWidget *widget = {GTK_WIDGET(mn_mail_icon_widget_new())};
+ 
+   private char *stock_id destroywith g_free;
+   private int size;
+--- epienbroek-mail-notification-45d11d2/src/mn-mail-icon-widget.gob.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-mail-icon-widget.gob	2025-08-30 21:07:16.313064730 +0200
+@@ -132,38 +132,39 @@ class MN:Mail:Icon:Widget from Mn:Widget
+   }
+ 
+   override (Mn:Widget) void
+-    mn_size_request (GtkWidget *widget, GtkRequisition *requisition)
++    mn_size_request (MnWidget *widget, GtkRequisition *requisition)
+   {
+-    self_size_request_internal(widget, requisition);
++    self_size_request_internal(GTK_WIDGET(widget), requisition);
+   }
+ 
+   override (Mn:Widget) void
+-    mn_get_preferred_width (GtkWidget *widget, gint *minimal_width, gint *natural_width)
++    mn_get_preferred_width (MnWidget *widget, gint *minimal_width, gint *natural_width)
+   {
+ #if GTK_CHECK_VERSION(3,0,0)
+     GtkRequisition requisition;
+ 
+-     self_size_request_internal (widget, &requisition);
++     self_size_request_internal (GTK_WIDGET(widget), &requisition);
+      *minimal_width = *natural_width = requisition.width;
+ #endif
+   }
+ 
+   override (Mn:Widget) void
+-    mn_get_preferred_height(GtkWidget *widget, gint *minimal_height, gint *natural_height)
++    mn_get_preferred_height(MnWidget *widget, gint *minimal_height, gint *natural_height)
+   {
+ #if GTK_CHECK_VERSION(3,0,0)
+     GtkRequisition requisition;
+ 
+-    self_size_request_internal (widget, &requisition);
++    self_size_request_internal (GTK_WIDGET(widget), &requisition);
+     *minimal_height = *natural_height = requisition.height;
+ #endif
+   }
+ 
+   /* GTK2 only */
+   override (Mn:Widget) gboolean
+-    mn_expose_event (GtkWidget *widget, GdkEventExpose *event)
++    mn_expose_event (MnWidget *mnwidget, GdkEventExpose *event)
+   {
+ #if !GTK_CHECK_VERSION(3,0,0)
++    GtkWidget *widget = GTK_WIDGET(mnwidget);
+     Self *self = SELF(widget);
+ 
+     if (! GTK_WIDGET_DRAWABLE(widget) || ! selfp->stock_id)
+@@ -289,9 +290,10 @@ class MN:Mail:Icon:Widget from Mn:Widget
+ 
+   /* GTK3 only */
+   override (Mn:Widget) gboolean
+-    mn_draw (GtkWidget *widget, cairo_t *cr)
++    mn_draw (MnWidget *mnwidget, cairo_t *cr)
+   {
+ #if GTK_CHECK_VERSION(3,0,0)
++    GtkWidget *widget = GTK_WIDGET(mnwidget);
+     Self *self = SELF(widget);
+ 
+     if (! gtk_widget_is_drawable(widget) || ! selfp->stock_id)
+--- epienbroek-mail-notification-45d11d2/src/mn-text-table.gob.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-text-table.gob	2025-08-30 21:10:14.617494772 +0200
+@@ -116,29 +116,29 @@ class MN:Text:Table from Mn:Widget
+   }
+ 
+   override (Mn:Widget) void
+-    mn_size_request (GtkWidget *widget, GtkRequisition *requisition)
++    mn_size_request (MnWidget *widget, GtkRequisition *requisition)
+   {
+-    self_size_request_internal(widget, requisition);
++    self_size_request_internal(GTK_WIDGET(widget), requisition);
+   }
+ 
+   override (Mn:Widget) void
+-    mn_get_preferred_width (GtkWidget * widget, gint * minimal_width, gint * natural_width)
++    mn_get_preferred_width (MnWidget * widget, gint * minimal_width, gint * natural_width)
+   {
+ #if GTK_CHECK_VERSION(3,0,0)
+     GtkRequisition requisition;
+ 
+-    self_size_request_internal (widget, &requisition);
++    self_size_request_internal (GTK_WIDGET(widget), &requisition);
+     *minimal_width = *natural_width = requisition.width;
+ #endif
+   }
+ 
+   override (Mn:Widget) void
+-    mn_get_preferred_height (GtkWidget * widget, gint * minimal_height, gint * natural_height)
++    mn_get_preferred_height (MnWidget * widget, gint * minimal_height, gint * natural_height)
+   {
+ #if GTK_CHECK_VERSION(3,0,0)
+     GtkRequisition requisition;
+ 
+-    self_size_request_internal (widget, &requisition);
++    self_size_request_internal (GTK_WIDGET(widget), &requisition);
+     *minimal_height = *natural_height = requisition.height;
+ #endif
+   }
+@@ -218,16 +218,16 @@ class MN:Text:Table from Mn:Widget
+ 
+   /* GTK2 only */
+   override (Mn:Widget) gboolean
+-    mn_expose_event (GtkWidget *widget, GdkEventExpose *event)
++    mn_expose_event (MnWidget *widget, GdkEventExpose *event)
+   {
+-      return self_draw_internal(widget, event, NULL);
++      return self_draw_internal(GTK_WIDGET(widget), event, NULL);
+   }
+ 
+   /* GTK3 only */
+   override (Mn:Widget) gboolean
+-    mn_draw (GtkWidget *widget, cairo_t *cr)
++    mn_draw (MnWidget *widget, cairo_t *cr)
+   {
+-      return self_draw_internal(widget, NULL, cr);
++      return self_draw_internal(GTK_WIDGET(widget), NULL, cr);
+   }
+ 
+   private void
+--- epienbroek-mail-notification-45d11d2/src/mn-widget.c.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-widget.c	2025-08-30 22:32:23.347745431 +0200
+@@ -42,32 +42,32 @@ mn_size_request (MnWidget *widget, GtkRe
+ /* GTK3 */
+ #if GTK_CHECK_VERSION(3,0,0)
+ static gboolean
+-mn_draw (MnWidget *widget, cairo_t *cr)
++mn_draw (GtkWidget *widget, cairo_t *cr)
+ {
+     MnWidgetClass *klass = MN_WIDGET_GET_CLASS(widget);
+ 
+     if (klass->mn_draw) {
+-        klass->mn_draw(widget, cr);
++        klass->mn_draw(MN_WIDGET(widget), cr);
+     }
+ }
+ 
+ static void
+-mn_get_preferred_height (MnWidget *widget, gint *minimum_height, gint *natural_height)
++mn_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height)
+ {
+     MnWidgetClass *klass = MN_WIDGET_GET_CLASS(widget);
+ 
+     if (klass->mn_get_preferred_height) {
+-        klass->mn_get_preferred_height(widget, minimum_height, natural_height);
++        klass->mn_get_preferred_height(MN_WIDGET(widget), minimum_height, natural_height);
+     }
+ }
+ 
+ static void
+-mn_get_preferred_width (MnWidget *widget, gint *minimum_width, gint *natural_width)
++mn_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width)
+ {
+     MnWidgetClass *klass = MN_WIDGET_GET_CLASS(widget);
+ 
+     if (klass->mn_get_preferred_width) {
+-        klass->mn_get_preferred_width(widget, minimum_width, natural_width);
++        klass->mn_get_preferred_width(MN_WIDGET(widget), minimum_width, natural_width);
+     }
+ }
+ #endif
+--- epienbroek-mail-notification-45d11d2/src/mn-mozilla-mailbox-backend.gob.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-mozilla-mailbox-backend.gob	2025-08-31 07:03:53.570269841 +0200
+@@ -69,7 +69,7 @@ class MN:Mozilla:Mailbox:Backend from MN
+   {
+     const char *header;
+ 
+-    header = g_mime_object_get_header(mime_message, header_name);
++    header = g_mime_object_get_header(GMIME_OBJECT(mime_message), header_name);
+     if (header && mn_str_ishex(header))
+       return strtol(header, NULL, 16);
+     else
+--- epienbroek-mail-notification-45d11d2/src/mn-base-mbox-mailbox-backend.gob.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-base-mbox-mailbox-backend.gob	2025-08-31 07:08:38.878700814 +0200
+@@ -140,7 +140,7 @@ class MN:Base:Mbox:Mailbox:Backend from
+ 	    mime_message = g_mime_parser_construct_message(parser);
+ 	    if (mime_message)
+ 	      {
+-		if (g_mime_object_get_header(mime_message, "X-Mozilla-Status"))
++		if (g_mime_object_get_header(GMIME_OBJECT(mime_message), "X-Mozilla-Status"))
+ 		  {
+ #if WITH_MOZILLA
+ 		    type = MN_TYPE_MOZILLA_MAILBOX_BACKEND;
+--- epienbroek-mail-notification-45d11d2/src/mn-message-mime.c.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-message-mime.c	2025-08-31 07:11:28.903085396 +0200
+@@ -33,12 +33,12 @@ is_spam (GMimeMessage *mime_message)
+   g_return_val_if_fail(GMIME_IS_MESSAGE(mime_message), FALSE);
+ 
+   /* SpamAssassin */
+-  spam = g_mime_object_get_header(mime_message, "X-Spam-Status");
++  spam = g_mime_object_get_header(GMIME_OBJECT(mime_message), "X-Spam-Status");
+   if (spam && mn_ascii_str_case_has_prefix(spam, "yes"))
+     return TRUE;
+ 
+   /* bogofilter */
+-  spam = g_mime_object_get_header(mime_message, "X-Bogosity");
++  spam = g_mime_object_get_header(GMIME_OBJECT(mime_message), "X-Bogosity");
+   if (spam && mn_ascii_str_case_has_prefix(spam, "yes"))
+     return TRUE;
+ 
+@@ -89,7 +89,7 @@ mn_message_new_from_mime_message_full (G
+     {
+       const char *status;
+ 
+-      status = g_mime_object_get_header(mime_message, "Status");
++      status = g_mime_object_get_header(GMIME_OBJECT(mime_message), "Status");
+       if (status && strchr(status, 'R'))
+ 	return NULL;		/* the message was read */
+       else if (status && strchr(status, 'O'))

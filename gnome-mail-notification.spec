@@ -3,7 +3,7 @@ Summary:	GNOME notification area mail monitor
 Summary(pl.UTF-8):	Monitor poczty widoczny w obszarze powiadamiania GNOME
 Name:		gnome-mail-notification
 Version:	5.4
-Release:	25
+Release:	26
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://github.com/epienbroek/mail-notification/tarball/master/%{rname}-%{version}.tar.gz
@@ -13,28 +13,29 @@ Patch1:		jb-glibc-2.19.patch
 Patch2:		jb-evolution-plugin-detect.patch
 Patch3:		evolution-3.12.patch
 Patch4:		evolution-3.16.patch
+Patch5:		mail-notification-camel.patch
+Patch6:		mail-notification-types.patch
 URL:		http://www.nongnu.org/mailnotify/
 BuildRequires:	GConf2-devel >= 2.22.0
-BuildRequires:	autoconf >= 2.59
-BuildRequires:	automake
 BuildRequires:	cyrus-sasl-devel >= 2.0
-BuildRequires:	evolution-devel >= 3.0.0
+BuildRequires:	dbus-glib-devel
+BuildRequires:	evolution-devel >= 3.42
 BuildRequires:	gettext-tools
-BuildRequires:	gmime-devel >= 2.1.19
-BuildRequires:	gmime22-devel
+BuildRequires:	glib2-devel >= 1:2.14
+BuildRequires:	gmime-devel >= 2.6
 BuildRequires:	gnome-vfs2-devel >= 2.22.0
 BuildRequires:	gob2 >= 2.0.17
 BuildRequires:	gtk+3-devel >= 3.0.0
 BuildRequires:	intltool >= 0.36.2
 BuildRequires:	libbonobo-devel >= 2.22.0
 BuildRequires:	libglade2-devel >= 1:2.6.2
+BuildRequires:	libgnome-devel >= 2.14.0
 BuildRequires:	libgnome-keyring-devel >= 3.0.0
-BuildRequires:	libgnomeui-devel >= 2.22.01
+#BuildRequires:	libgnomeui-devel >= 2.22.01
 BuildRequires:	libnotify-devel >= 0.4.1
-BuildRequires:	libtool
 BuildRequires:	libxml2-devel >= 1:2.6.31
-BuildRequires:	nautilus-devel >= 2.30
-BuildRequires:	openssl-devel
+#BuildRequires:	nautilus-devel >= 2.30
+BuildRequires:	openssl-devel >= 0.9.6
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(find_lang) >= 1.23
 BuildRequires:	rpmbuild(macros) >= 1.311
@@ -44,10 +45,7 @@ Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	scrollkeeper
 Requires(post,preun):	GConf2
-Requires:	gmime >= 2.1.19
-Requires:	libgnomeui >= 2.22.01
-# sr@Latn vs. sr@latin
-Conflicts:	glibc-misc < 6:2.7
+#Requires:	libgnomeui >= 2.22.01
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -65,7 +63,7 @@ Summary:	Mail Notification plugin for Evolution
 Summary(pl.UTF-8):	Wtyczka Mail Notification dla Evolution
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	evolution >= 3.0.0
+Requires:	evolution >= 3.42
 
 %description -n evolution-plugin-mail-notification
 Evolution mailbox support for Mail Notification.
@@ -80,6 +78,8 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 %patch -P2 -p1
 %patch -P3 -p1
 %patch -P4 -p1
+%patch -P5 -p1
+%patch -P6 -p1
 
 %build
 ./jb configure \
@@ -96,7 +96,8 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 	libs="-lX11" \
 	destdir=$RPM_BUILD_ROOT \
 	install-gconf-schemas=no \
-	evolution-plugin-dir=%{_libdir}/evolution/plugins/
+	evolution-plugin-dir=%{_libdir}/evolution/plugins/ \
+	gtk3=yes
 
 ./jb build
 
@@ -104,10 +105,6 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 rm -rf $RPM_BUILD_ROOT
 
 ./jb install
-
-# install also GtkBuilder files
-#cp -p ui/mailbox-properties-dialog.ui $RPM_BUILD_ROOT%{_datadir}/mail-notification
-#cp -p ui/properties-dialog.ui $RPM_BUILD_ROOT%{_datadir}/mail-notification
 
 %find_lang %{rname} --all-name --with-gnome --with-omf
 
@@ -133,8 +130,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mail-notification
 %{_sysconfdir}/xdg/autostart/mail-notification.desktop
 %{_desktopdir}/mail-notification-properties.desktop
-%{_iconsdir}/hicolor/*/*/*.png
-%{_iconsdir}/hicolor/*/*/*.svg
+%{_iconsdir}/hicolor/*x*/apps/mail-notification.png
+%{_iconsdir}/hicolor/scalable/apps/mail-notification.svg
 %{_sysconfdir}/gconf/schemas/mail-notification.schemas
 
 %files -n evolution-plugin-mail-notification
