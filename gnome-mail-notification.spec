@@ -31,10 +31,8 @@ BuildRequires:	libbonobo-devel >= 2.22.0
 BuildRequires:	libglade2-devel >= 1:2.6.2
 BuildRequires:	libgnome-devel >= 2.14.0
 BuildRequires:	libgnome-keyring-devel >= 3.0.0
-#BuildRequires:	libgnomeui-devel >= 2.22.01
 BuildRequires:	libnotify-devel >= 0.4.1
 BuildRequires:	libxml2-devel >= 1:2.6.31
-#BuildRequires:	nautilus-devel >= 2.30
 BuildRequires:	openssl-devel >= 0.9.6
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(find_lang) >= 1.23
@@ -83,8 +81,9 @@ Wsparcie dla skrzynek pocztowych Evolution w Mail Notification.
 
 %build
 ./jb configure \
+	cc="%{__cc}" \
 	cflags="%{rpmcflags}" \
-	cppflags="%{rpmcppflags}" \
+	cppflags="%{rpmcppflags} -D_FILE_OFFSET_BITS=64" \
 	ldflags="%{rpmldflags}" \
 	prefix=%{_prefix} \
 	bindir=%{_bindir} \

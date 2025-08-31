@@ -218,3 +218,14 @@
        if (status && strchr(status, 'R'))
  	return NULL;		/* the message was read */
        else if (status && strchr(status, 'O'))
+--- epienbroek-mail-notification-45d11d2/src/mn-gmime-stream-vfs.gob.orig	2013-02-10 20:57:29.000000000 +0100
++++ epienbroek-mail-notification-45d11d2/src/mn-gmime-stream-vfs.gob	2025-08-31 08:16:07.880252252 +0200
+@@ -203,7 +203,7 @@ class MN:GMime:Stream:VFS from GMime:Str
+     return stream->position;
+   }
+ 
+-  override (GMime:Stream) ssize_t
++  override (GMime:Stream) gint64
+     length (GMimeStream *stream)
+   {
+     Self *self = SELF(stream);
